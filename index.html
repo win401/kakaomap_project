@@ -11,30 +11,32 @@
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fbd35a39f3cd75fc9a5b2976f0b07ef1&libraries=services,clusterer,drawing"></script>
     <script>
       // 가정: 주소 불러오기 완료
-      const address = "수원시 장안구 만석로 29";
+      const addresses = ["수원시 장안구 만석로 29", "서울특별시 강남구 천천동 123"];
 
-      // 주소를 좌표로 변환할 객체 geocoder 생성
       const geocoder = new kakao.maps.services.Geocoder();
 
-      // 주소를 좌표로 변환
-      geocoder.addressSearch(address, function (result, status) {
-        // 변환 성공시
-        if (status === kakao.maps.services.Status.OK) {
-          const coordinates = new kakao.maps.LatLng(result[0].y, result[0].x);
+      // 주소를 좌표로 변환하고 마커를 생성하여 지도에 추가
+      addresses.forEach(function (address) {
+        geocoder.addressSearch(address, function (result, status) {
+          if (status === kakao.maps.services.Status.OK) {
+            const coordinates = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-          var container = document.getElementById("map");
-          var options = {
-            center: coordinates,
-            level: 3,
-          };
+            // 지도 생성
+            var container = document.getElementById("map");
+            var options = {
+              center: coordinates,
+              level: 3,
+            };
 
-          var map = new kakao.maps.Map(container, options);
+            var map = new kakao.maps.Map(container, options);
 
-          const marker = new kakao.maps.Marker({
-            position: coordinates,
-            map: map,
-          });
-        }
+            // 마커 추가
+            const marker = new kakao.maps.Marker({
+              position: coordinates,
+              map: map,
+            });
+          }
+        });
       });
     </script>
   </body>
