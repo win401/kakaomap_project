@@ -15,20 +15,19 @@
 
       const geocoder = new kakao.maps.services.Geocoder();
 
-      // 주소를 좌표로 변환하고 마커를 생성하여 지도에 추가
+      // 지도 생성
+      var container = document.getElementById("map");
+      var options = {
+        center: new kakao.maps.LatLng(37.264264, 127.022262), // 중심 좌표를 임의로 지정
+        level: 3,
+      };
+      var map = new kakao.maps.Map(container, options);
+
+      // 각 주소의 좌표를 얻어와서 마커를 생성하여 지도에 추가
       addresses.forEach(function (address) {
         geocoder.addressSearch(address, function (result, status) {
           if (status === kakao.maps.services.Status.OK) {
             const coordinates = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-            // 지도 생성
-            var container = document.getElementById("map");
-            var options = {
-              center: coordinates,
-              level: 3,
-            };
-
-            var map = new kakao.maps.Map(container, options);
 
             // 마커 추가
             const marker = new kakao.maps.Marker({
