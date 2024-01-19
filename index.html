@@ -1,3 +1,5 @@
+<!-- templates/index.html -->
+
 <!DOCTYPE html>
 <html lang="ko">
   <head>
@@ -10,44 +12,40 @@
     <div id="map" style="width: 100%; height: 100vh"></div>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fbd35a39f3cd75fc9a5b2976f0b07ef1&libraries=services,clusterer,drawing"></script>
     <script>
-      // 가정: 공공데이터로부터 받은 JSON 형식의 주소 데이터
-      const addressData = [
-        { address: "수원시 장안구 만석로 29" },
-        { address: "화성시 동탄기흥로 557" },
-        // 추가적인 주소 데이터가 있다면 계속 추가하세요
-      ];
+        // addressData를 서버에서 전달한 데이터로 초기화
+      const addressData = {{ address_data | tojson | safe }};
 
-      const geocoder = new kakao.maps.services.Geocoder();
+        const geocoder = new kakao.maps.services.Geocoder();
 
-      // 지도 생성
-      var container = document.getElementById("map");
-      var options = {
-        center: new kakao.maps.LatLng(37.264264, 127.022262),
-        level: 3,
-      };
-      var map = new kakao.maps.Map(container, options);
+        // 지도 생성
+        var container = document.getElementById("map");
+        var options = {
+          center: new kakao.maps.LatLng(37.264264, 127.022262),
+          level: 3,
+        };
+        var map = new kakao.maps.Map(container, options);
 
-      // 주소 데이터를 이용하여 마커를 추가하는 함수
-      function addMarkers() {
-        addressData.forEach(function (data) {
-          const address = data.address;
+        // 주소 데이터를 이용하여 마커를 추가하는 함수
+        function addMarkers() {
+          addressData.forEach(function (data) {
+            const address = data.address;
 
-          geocoder.addressSearch(address, function (result, status) {
-            if (status === kakao.maps.services.Status.OK) {
-              const coordinates = new kakao.maps.LatLng(result[0].y, result[0].x);
+            geocoder.addressSearch(address, function (result, status) {
+              if (status === kakao.maps.services.Status.OK) {
+                const coordinates = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-              // 마커 추가
-              const marker = new kakao.maps.Marker({
-                position: coordinates,
-                map: map,
-              });
-            }
+                // 마커 추가
+                const marker = new kakao.maps.Marker({
+                  position: coordinates,
+                  map: map,
+                });
+              }
+            });
           });
-        });
-      }
+        }
 
-      // 페이지 로딩 시 마커 추가
-      addMarkers();
+        // 페이지 로딩 시 마커 추가
+        addMarkers();
     </script>
   </body>
 </html>
