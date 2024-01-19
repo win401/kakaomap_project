@@ -32,7 +32,7 @@
       }
 
       // 지도 생성
-      var container = document.getElementById("mapContainer");
+      var container = document.getElementById("map");
       var options = {
         center: new Kakao.maps.LatLng(37.566826, 126.9786567), // 초기 지도 중심 좌표
         level: 3, // 초기 지도 확대 레벨
@@ -40,7 +40,7 @@
       var map = new Kakao.maps.Map(container, options);
 
       // 예시: 주소를 받아와서 마커 추가
-      var sampleAddress = "서울특별시 강남구 역삼동 123";
+      var sampleAddress = "수원시 장안구 만석로 29";
       addMarkerByAddress(sampleAddress);
     </script>
   </body>
